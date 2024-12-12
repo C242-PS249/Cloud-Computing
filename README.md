@@ -7,7 +7,7 @@ We will integrate all the three learning paths (Machine Learning, Cloud Computin
 ### API Features:
 - Predict Batik Class
 
-    Enable user tu upload an image to predict batik class.
+    Enable user to upload an image to predict batik class.
 - Metadata:
 
     Users can view comprehensive details about each batik pattern, helping them understand its origin, philosophy, and history
@@ -55,19 +55,71 @@ npm run start
 
 After successfully deploying the application to Cloud Run on Google Cloud Platform, you should test it using Postman or any other API testing tool.
 
-#### Get Batik Metadata
-
+#### Get All Batik Metadata 
 ```http
-  GET /batikmetadata
+GET /batikmetadata
 ```
 
 | Parameter (query) | Type     | Description                |
 | :-------- | :------- | :------------------------- |
+| `namaBatik` | `string` | **Required**. Specific item |
 | `asalBatik` | `string` | **Required**. Specific item |
 | `filosofiBatik` | `string` | **Required**. Specific item |
-| `namaBatik` | `string` | **Required**. Specific item |
 | `sejarahBatik` | `string` | **Required**. Specific item |
+| `url` | `string` | **Required**. Specific image with same id |
 
+* **Status code:** 200</br>
+```
+{
+    "success": true,
+    "data": [
+        {
+            "id": "1",
+            "namaBatik": "Batik Name",
+            "asalBatik": "Batik Region",
+            "filosofiBatik": "Batik Phylosophy.",
+            "sejarahBatik": "Batik History.",
+            "imageUrl": {
+                "url": [
+                    "batik-image-url-bucket"
+                ]
+            }
+        },
+    ]
+}
+```
+
+#### Get Batik Metadata by ID
+```http
+GET /batikmetadata
+```
+
+| Parameter (query) | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| `namaBatik` | `string` | **Required**. Specific item |
+| `asalBatik` | `string` | **Required**. Specific item |
+| `filosofiBatik` | `string` | **Required**. Specific item |
+| `sejarahBatik` | `string` | **Required**. Specific item |
+| `url` | `string` | **Required**. Specific image with same id |
+
+* **Status code:** 200</br>
+```
+{
+    "success": true,
+    "data": {
+        "namaBatik": "Batik Name",
+        "asalBatik": "Batik Origin",
+        "filosofiBatik": "Batik Phylosophy.",
+        "sejarahBatik": "Batik history."
+    },
+    "imageUrl": {
+        "url": [
+            "batik-image-url-bucket"
+        ]
+    }
+}  
+```
+  
 #### Get User History
 
 ```http
@@ -76,12 +128,33 @@ After successfully deploying the application to Cloud Run on Google Cloud Platfo
 
 | Parameter (query) | Type     | Description                |
 | :-------- | :------- | :------------------------- |
-| `confidenceScore` | `string` | **Required**. Specific item |
-| `createdAt` | `timestamp` | **Required**. Specific item |
-| `id` | `string` | **Required**. authentication |
-| `idBatik` | `string` | **Required**. Specific item |
-| `result` | `string` | **Required**. Specific item |
+| `namaBatik` | `string` | **Required**. Specific item |
+| `asalBatik` | `timestamp` | **Required**. Specific item |
+| `filosofiBatik` | `string` | **Required**. Specific item |
+| `sejarahBatik` | `string` | **Required**. Specific item |
+| `url` | `string` | **Required**. A specific image with the same idBatik, idMetadata, and idImage |
 
+* **Status code:** 200</br>
+```
+  {
+    "success": true,
+    "data": {
+        "namaBatik": "Batik Name",
+        "asalBatik": "Batik Origin”,
+        "filosofiBatik": "Batik Philosophy.",
+        "sejarahBatik": "Batik History."
+    },
+    "imageUrl": {
+        "url": [
+            "batik-image-url-bucket"
+          ]
+      },
+      {
+      etc.
+      }
+  }
+```
+  
 #### Predict Image
 
 ```http
@@ -95,6 +168,30 @@ After successfully deploying the application to Cloud Run on Google Cloud Platfo
 | `id` | `string` | **Required**. authentication |
 | `idBatik` | `string` | **Required**. Specific item |
 | `result` | `string` | **Required**. Specific item |
+
+* **Status code:** 200</br>
+```
+  {
+    "status": "success",
+    "message": "Model is predicted successfully. And saved to history",
+    "predictData": {
+        "id": "unique–uuid",
+        "idBatik": “batik-id”,
+        "result": "Batik Name",
+        "confidenceScore": 99.60592985153198,
+        "createdAt": "2024-12-10T21:26:33.139Z"
+    },
+    "metadata": {
+        "namaBatik": "Batik Name",
+        "asalBatik": "Batik Origin”,
+        "filosofiBatik": "Batik Philosophy.",
+        "sejarahBatik": "Batik History."
+    },
+    "imageUrl": {
+        "url": ‘batik-image-url-bucket’
+        }
+  }
+```
 
 ## Contact
 
